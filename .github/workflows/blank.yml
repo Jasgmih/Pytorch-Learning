@@ -1,0 +1,49 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  # 也就是 做CI测试的on的开关, 在这里设置, 这里是每次pull/push的时候就会自动做测试, 不通过测试的话是不能进行pull/push的
+  push:
+    branches: [ "master" ] # 你可以添加其他的brach, 比如 ["master", "dev"] 
+  pull_request:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  # Another option would be to trigger this pipeline manually, so I can go to GitHub and then 
+  # click a button to say Trigger, please trigger this pipeline now. 
+  # And that could be done with workflow_dispatch.
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  # 可以包含多个job, 这里是例子, 就包含了一个job, 也就是build
+  build:
+    # The type of runner that the job will run on
+    # So a runner is the machine that will run my pipeline 这里就是那个runner, 也就是在什么环境里运行你的代码
+    # 也就是你的pipeline实际并不是在GitHub中运行的, 而是在如下定义的virtual machine中运行来进行测试的
+    # so github have multiple virtual machines available for it or 
+    # multiple runners that could run even either on Ubuntu or on Windows or on macOS. 比如 
+    runs-on: ubuntu-latest, windows-latest, macos
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    # So this steps describes what should run inside the runner. 所以看到如下, 我们有 multiple steps
+    # 比如 uses, name等
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # this is actually a step that we would go to check out the application source code.
+      # 这里实际是github一个public repository, 可以直接搜索得到的
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
